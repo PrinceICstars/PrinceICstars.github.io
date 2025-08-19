@@ -1,7 +1,7 @@
 //gameCanvas
 var blocksize = 25;
-var rows = 20;
-var cols = 20; 
+var rows = 35;
+var cols = 40; 
 var gameCanvas;
 var context;
 
@@ -22,6 +22,17 @@ var foodY
 
 var gameOver = false;
 
+function resetGame() {
+    snakeX = blocksize * 5;
+    snakeY = blocksize * 5;
+    velocityX = 0;
+    velocityY = 0;
+    snakeBody = [];
+    gameOver = false;
+    placefood();
+}
+
+
 
 window.onload = function() {
     gameCanvas = document.getElementById("gameCanvas");
@@ -31,13 +42,26 @@ window.onload = function() {
 
     placefood();
     document.addEventListener("keyup", changeDirection);
+    document.addEventListener("keydown", function(e) {
+        if (gameOver && e.code === "Space") {
+            resetGame();
+        }
+    });
     update();
-    setInterval(update, 10000/10);
+    setInterval(update, 1000/10);
 }
 
 
 function update() {
     if (gameOver) {
+        context.fillStyle = "rgba(0,0,0,0.7)";
+        context.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+        context.fillStyle = "white";
+        context.font = "40px Arial";
+        context.textAlign = "center";
+        context.fillText("Game Over", gameCanvas.width/2, gameCanvas.height/2 - 20);
+        context.font = "20px Arial";
+        context.fillText("Press Space to Restart", gameCanvas.width/2, gameCanvas.height/2 + 20);
         return;
     }
     
@@ -76,15 +100,13 @@ function update() {
      }
      
      // game over conditions
-     if (snakeX < 0 || snakeX > cols*blocksize || snakeY < 0 || snakeY > rows*blocksize) {
-        gameover = true;
-        alert("Game Over");
+     if (snakeX < 0 || snakeX >= cols*blocksize || snakeY < 0 || snakeY >= rows*blocksize) {
+        gameOver = true;
     }
 
     for (let i = 0; i < snakeBody.length; i++) {
         if (snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]) {
             gameOver = true;
-            alert("Game Over");
         }
     }
 }

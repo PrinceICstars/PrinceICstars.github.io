@@ -1,10 +1,11 @@
 let firstname = " Visitor";
 function greet(){
     // code here
-    alert("Hello," + firstname +, " Welcome to My Page!");
+    alert("Hello," + firstname + " Welcome to My Page!");
 }
+// greet(firstname);
 
-greet(firstname);
+
 document.getElementById("loginForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
